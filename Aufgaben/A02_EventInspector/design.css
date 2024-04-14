@@ -1,0 +1,21 @@
+body{
+    background: linear-gradient(to right, #159957, #155799);
+    margin-top: 30px;
+    width: 400px;
+    height: 300px;
+    margin-left: 100px;
+    display: inline-block;
+}
+
+span{
+    position: fixed;
+    offset-position: 20px 20px ;
+    top: 150px;
+    left: 150px;
+}
+
+#button {
+    background: linear-gradient(to right, #f2994a, #f2c94c);
+    color: rgb(49, 49, 49);
+    padding: 5px;
+}
