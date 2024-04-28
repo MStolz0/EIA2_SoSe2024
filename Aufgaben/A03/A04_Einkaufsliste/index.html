@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 
-    <!--Aufgabe: Einkaufsliste
+    <!--Aufgabe: Einkaufsliste Datenstrukturen
     Name: Manuel Dennis Stolz
     Matrikelnummer: 271135
-    Links: W3C-Schools.de (Clients); 
-    Datum: 27.04.2024
+    Links: W3C-Schools.de 
+    Datum: 28.04.2024
     <!--Open Console on your site/browser*/-->
 
     <meta charset="UTF-8">
@@ -19,10 +19,13 @@
         <h1>Shopping List</h1>
         <div class="input-section">
             <input type="text" id="itemInput" placeholder="Enter item">
+            <input type="number" id="quantityInput" class="quantity-input" value="1" min="1">
             <textarea id="commentInput" placeholder="Enter comments"></textarea>
             <button onclick="addItem()">Add Item</button>
         </div>
-        <ul id="shoppingList"></ul>
+        <ul id="shoppingList">
+            <!-- Items will be dynamically added here -->
+        </ul>
     </div>
 
     <script src="app.js" defer></script>
