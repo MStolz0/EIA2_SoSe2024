@@ -11,15 +11,30 @@ class ShoppingList {
 
     constructor() {
         this.items = [];
-        this.render();
     }
 
     // Method to add an item to the list
-    addItem(name: string, quantity: number, comments: string = ''): void {
-        const newItem: ShoppingListItem = { name, quantity, comments };
-        this.items.push(newItem);
-        console.log(`Added item: ${name}`);
-        this.render();
+    addItem(): void {
+        const itemInput = document.getElementById('itemInput') as HTMLInputElement;
+        const quantityInput = document.getElementById('quantityInput') as HTMLInputElement;
+        const commentInput = document.getElementById('commentInput') as HTMLTextAreaElement;
+
+        const name = itemInput.value.trim();
+        const quantity = parseInt(quantityInput.value) || 1;
+        const comments = commentInput.value.trim();
+
+        if (name !== '') {
+            const newItem: ShoppingListItem = { name, quantity, comments };
+            this.items.push(newItem);
+            console.log(`Added item: ${name}`);
+            this.render();
+            // Clear input fields
+            itemInput.value = '';
+            quantityInput.value = '1';
+            commentInput.value = '';
+        } else {
+            console.warn('No item name entered');
+        }
     }
 
     // Method to remove an item from the list
@@ -39,14 +54,12 @@ class ShoppingList {
         if (shoppingListElement) {
             shoppingListElement.innerHTML = '';
 
-            // Render items
             this.items.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.classList.add('item');
                 li.innerHTML = `
                     <div class="item-name">${item.name}</div>
-                    <div class="item-comments">${item.comments}</div>
-                    <div>Menge: ${item.quantity}</div>
+                    <div class="item-details">Quantity: ${item.quantity}, Comments: ${item.comments}</div>
                     <button class="remove-button" onclick="removeItem(${index})">Remove</button>
                 `;
                 shoppingListElement.appendChild(li);
@@ -60,24 +73,10 @@ const shoppingList = new ShoppingList();
 
 // Function to add item
 function addItem() {
-    const itemInput = document.getElementById('itemInput') as HTMLInputElement;
-    const quantityInput = document.getElementById('quantityInput') as HTMLInputElement;
-    const commentInput = document.getElementById('commentInput') as HTMLTextAreaElement;
-
-    const quantity = parseInt(quantityInput.value) || 1;
-
-    if (itemInput.value.trim() !== '') {
-        shoppingList.addItem(itemInput.value.trim(), quantity, commentInput.value.trim());
-        itemInput.value = '';
-        quantityInput.value = '1';
-        commentInput.value = '';
-    } else {
-        console.warn('No item name entered');
-    }
+    shoppingList.addItem();
 }
 
 // Function to remove item
 function removeItem(index: number) {
     shoppingList.removeItem(index);
-    console.log(`Removed item at index: ${index}`);
 }
