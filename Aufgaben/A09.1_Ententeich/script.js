@@ -137,24 +137,24 @@ class Bird {
         this.y = y;
         this.startX = x;
         this.startY = y;
-        this.targetX = x + 100;
+        this.targetX = x + 50;
         this.targetY = y;
-        this.speedX = 1;
+        this.speedX = 0.5;
         this.speedY = 1;
     }
     draw() {
         // Zeichne den Vogel
         this.context.fillStyle = this.color;
-        this.context.fillRect(this.x, this.y, 15, 10); // Korrekte Zeichenanweisungen für einen Vogel
+        this.context.fillRect(this.x, this.y, 10, 5);
         this.context.fillStyle = "#757575";
-        this.context.fillRect(this.x + 7, this.y - 1, 15, 7);
+        this.context.fillRect(this.x + 7, this.y - 1.5, 10, 5);
         this.context.fillStyle = this.color;
         this.context.fillRect(this.x - 3, this.y - 6, 6, 6);
         this.context.fillStyle = "orange";
         this.context.fillRect(this.x + 3, this.y - 3, 4, 2);
         this.context.fillStyle = "#757575";
-        this.context.fillRect(this.x + 7, this.y + 10, 1, 5);
-        this.context.fillRect(this.x + 12, this.y + 10, 1, 5);
+        this.context.fillRect(this.x + 2, this.y + 5, 1, 5);
+        this.context.fillRect(this.x + 7, this.y + 5, 1, 5);
     }
     update() {
         switch (this.behavior) {
@@ -188,12 +188,16 @@ class Bird {
         this.speedY = speedY;
     }
     fly() {
-        // Fliegen: Von links nach rechts durch den Bildschirm fliegen
-        this.x += this.speedX;
-        this.y += Math.sin(this.x / 20) * 2; // Vertikale Oszillation beim Fliegen
+        const flySpeedX = 0.7; // Langsamere horizontale Geschwindigkeit
+        const flyAmplitude = 5; // Kleinere Amplitude der Sinuskurve
+        this.x += flySpeedX;
+        // Berechne die vertikale Position des Vogels im Himmel über den Bergen
+        const minHeight = 10; // Vogel sollte über den Bergen fliegen
+        const maxHeight = this.canvas.height * 0.75; // Höhe der Berge
+        this.y = Math.min(maxHeight, Math.max(minHeight, this.y + Math.sin(this.x / flyAmplitude) * 1));
         if (this.x > this.canvas.width) {
             this.x = -15; // Setze den Vogel zurück, wenn er den Bildschirmrand erreicht
-            this.y = Math.random() * this.canvas.height;
+            this.y = Math.random() * maxHeight; // Zufällige vertikale Position über den Bergen
         }
     }
     walk() {
@@ -204,16 +208,23 @@ class Bird {
         this.x += this.speedX;
     }
     swim() {
-        // Schwimmen: Hin und her innerhalb des Teichbereichs schwimmen
-        const minX = this.startX + 5; // Linke Begrenzung des Teichs
-        const maxX = this.startX + 35; // Rechte Begrenzung des Teichs
-        // Überprüfe, ob der Vogel am Rand des Teichs ist, und ändere die Richtung entsprechend
-        if (this.x <= minX || this.x >= maxX) {
-            this.speedX *= -1; // Richtung umkehren
+        const pondWidth = 80;
+        const pondHeight = 30;
+        const pondX = (this.canvas.width - pondWidth) / 2;
+        const mountainHeight = this.canvas.height * 0.75;
+        const pondY = mountainHeight + (this.canvas.height - mountainHeight - pondHeight) / 2;
+        const leftBorder = pondX;
+        const rightBorder = pondX + pondWidth;
+        const swimSpeedX = 0.2; // Langsamere horizontale Geschwindigkeit
+        if (this.x < leftBorder) {
+            this.x = leftBorder; // Begrenze die linke Position des Vogels auf die linke Grenze des Teichs
+            this.speedX = swimSpeedX; // Setze die horizontale Geschwindigkeit neu, um nach rechts zu schwimmen
         }
-        // Aktualisiere die Position des Vogels basierend auf der Geschwindigkeit
+        else if (this.x + 10 > rightBorder) {
+            this.x = rightBorder - 10; // Begrenze die rechte Position des Vogels auf die rechte Grenze des Teichs
+            this.speedX = -swimSpeedX; // Setze die horizontale Geschwindigkeit neu, um nach links zu schwimmen
+        }
         this.x += this.speedX;
-        this.y += this.speedY;
     }
 }
 class Sky {
@@ -249,11 +260,12 @@ class Sky {
         ];
         const pondX = (this.canvas.width - 80) / 2;
         const mountainHeight = this.canvas.height * 0.75;
+        const pondY = mountainHeight + (this.canvas.height - mountainHeight - 30) / 2;
         this.birds = [
             new Bird(this.canvas, this.context, this.canvas.width * 0.2, this.canvas.height * 0.1, "flying", "#FF5722"), // Orangener Vogel (fliegt)
-            new Bird(this.canvas, this.context, pondX + 15, mountainHeight + (this.canvas.height - mountainHeight - 30) / 2 + 7, "walking", "#4CAF50"), // Grüner Vogel (fliegt)
-            new Bird(this.canvas, this.context, pondX - 15, mountainHeight + (this.canvas.height - mountainHeight - 30) / 2, "swimming", "#000000"), // Schwarzer Vogel (schwimmt)
-            new Bird(this.canvas, this.context, this.canvas.width * 0.3, mountainHeight + 15, "swimming", "#FFEB3B"), // Gelber Vogel (schwimmt)
+            new Bird(this.canvas, this.context, -15 + 15, mountainHeight + (this.canvas.height - mountainHeight - 30) / 2 + 7, "walking", "#4CAF50"), // Grüner Vogel (läuft)
+            new Bird(this.canvas, this.context, pondX + 15, pondY + 15, "swimming", "#000000"), // Schwarzer Vogel (schwimmt)
+            new Bird(this.canvas, this.context, pondX - 15, pondY, "swimming", "#FFEB3B"), // Gelber Vogel (schwimmt)
             new Bird(this.canvas, this.context, this.canvas.width * 0.6, this.canvas.height * 0.15, "flying", "#9C27B0"), // Lila Vogel (fliegt)
             new Bird(this.canvas, this.context, this.canvas.width * 0.7, mountainHeight + 22, "walking", "#FF9800") // Hell Oranger Vogel (läuft)
         ];
