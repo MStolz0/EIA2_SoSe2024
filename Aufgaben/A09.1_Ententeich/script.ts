@@ -218,11 +218,11 @@ class Bird {
         const swimSpeedX = 0.2; // Langsamere horizontale Geschwindigkeit
     
         if (this.x < leftBorder) {
-            this.x = leftBorder; // Begrenze die linke Position des Vogels auf die linke Grenze des Teichs
-            this.speedX = swimSpeedX; // Setze die horizontale Geschwindigkeit neu, um nach rechts zu schwimmen
+            this.x = leftBorder; 
+            this.speedX = swimSpeedX; 
         } else if (this.x + 10 > rightBorder) {
-            this.x = rightBorder - 10; // Begrenze die rechte Position des Vogels auf die rechte Grenze des Teichs
-            this.speedX = -swimSpeedX; // Setze die horizontale Geschwindigkeit neu, um nach links zu schwimmen
+            this.x = rightBorder - 10; 
+            this.speedX = -swimSpeedX; 
         }
     
         this.x += this.speedX;
@@ -271,7 +271,7 @@ class Sky {
 
         this.birds = [
             new Bird(this.canvas, this.context, this.canvas.width * 0.2, this.canvas.height * 0.1, "flying", "#FF5722"), // Orangener Vogel (fliegt)
-            new Bird(this.canvas, this.context, -15 + 15, mountainHeight + (this.canvas.height - mountainHeight - 30) / 2 + 7, "walking", "#4CAF50"), // Grüner Vogel (läuft)
+            new Bird(this.canvas, this.context, 10 + 15, mountainHeight + (this.canvas.height - mountainHeight - 30) / 2 + 7, "walking", "#4CAF50"), // Grüner Vogel (läuft)
             new Bird(this.canvas, this.context, pondX + 15, pondY + 15, "swimming", "#000000"), // Schwarzer Vogel (schwimmt)
             new Bird(this.canvas, this.context, pondX - 15, pondY, "swimming", "#FFEB3B"), // Gelber Vogel (schwimmt)
             new Bird(this.canvas, this.context, this.canvas.width * 0.6, this.canvas.height * 0.15, "flying", "#9C27B0"), // Lila Vogel (fliegt)
