@@ -95,7 +95,7 @@ class Cloud {
     update(): void {
         this.x += this.speed;
         if (this.x > this.canvas.width) {
-            this.x = -120; // Wolke erscheint wieder links
+            this.x = -120; // Wolke Loop
         }
     }
 }
@@ -139,7 +139,7 @@ class Bird {
         this.context.fillRect(this.x + 2, this.y + 5, 1, 5);
         this.context.fillRect(this.x + 7, this.y + 5, 1, 5);
     }
-
+    //Verhaltensweisen
     update(): void {
         switch (this.behavior) {
             case 'flying':
@@ -179,26 +179,26 @@ class Bird {
     }
 
     private fly(): void {
-        const flySpeedX = 0.7; // Langsamere horizontale Geschwindigkeit
-        const flyAmplitude = 5; // Kleinere Amplitude der Sinuskurve
+        const flySpeedX = 0.7; 
+        const flyAmplitude = 5; 
     
         this.x += flySpeedX;
         
-        // Berechne die vertikale Position des Vogels im Himmel über den Bergen
-        const minHeight = 10; // Vogel sollte über den Bergen fliegen
-        const maxHeight = this.canvas.height * 0.75; // Höhe der Berge
+        
+        const minHeight = 10; 
+        const maxHeight = this.canvas.height * 0.75; 
         this.y = Math.min(maxHeight, Math.max(minHeight, this.y + Math.sin(this.x / flyAmplitude) * 1));
     
         if (this.x > this.canvas.width) {
-            this.x = -15; // Setze den Vogel zurück, wenn er den Bildschirmrand erreicht
-            this.y = Math.random() * maxHeight; // Zufällige vertikale Position über den Bergen
+            this.x = -15; //Vogel Loop
+            this.y = Math.random() * maxHeight; 
         }
     }
     
     
 
     private walk(): void {
-        // Gehen: Hin und her zwischen Start- und Zielposition laufen
+        
         if (this.x < this.startX || this.x > this.targetX) {
             this.speedX *= -1; // Richtung umkehren an den Zielpunkten
         }
@@ -215,7 +215,7 @@ class Bird {
         const leftBorder = pondX;
         const rightBorder = pondX + pondWidth;
     
-        const swimSpeedX = 0.2; // Langsamere horizontale Geschwindigkeit
+        const swimSpeedX = 0.2; 
     
         if (this.x < leftBorder) {
             this.x = leftBorder; 
@@ -286,8 +286,8 @@ class Sky {
         for (let mountain of this.mountains) {
             mountain.draw();
         }
-        this.grassland.draw(); // Draw grassland before mountains
-        this.pond.draw(); // Draw pond before mountains
+        this.grassland.draw(); 
+        this.pond.draw(); 
         this.sun.draw();
         for (let cloud of this.clouds) {
             cloud.draw();
@@ -316,8 +316,8 @@ class Sky {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.draw();
         this.update();
-        this.updateBirds(); // Aktualisiere die Vögel
-        this.drawBirds(); // Zeichne die Vögel
+        this.updateBirds(); 
+        this.drawBirds(); 
         requestAnimationFrame(() => this.animate());
     }
 }
